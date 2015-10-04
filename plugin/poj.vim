@@ -48,7 +48,7 @@ function! s:login()
   if !exists('g:poj_password')
     let g:poj_password = inputsecret('Password: ')
   endif
-  let cmd = printf('%s -c %s -d user_id1=%s -d password1=%s -d url=/JudgeOnline/ http://acm.pku.edu.cn/JudgeOnline/login',
+  let cmd = printf('%s -c %s -d user_id1=%s -d password1=%s -d url=/JudgeOnline/ http://poj.org/login',
         \ s:curl, s:cookie_file, g:poj_user, g:poj_password)
   if exists('g:poj_proxy')
     let cmd .= ' -x ' . g:poj_proxy
@@ -86,7 +86,7 @@ function! s:show_status(conn, func, name)
 endfunction
 
 function! s:get_user_status(user)
-  let cmd = printf('%s -s -G -d user_id=%s http://acm.pku.edu.cn/JudgeOnline/status', s:curl, a:user)
+  let cmd = printf('%s -s -G -d user_id=%s http://poj.org/status', s:curl, a:user)
   if exists('g:poj_proxy')
     let cmd .= ' -x ' . g:poj_proxy
   endif
@@ -96,7 +96,7 @@ function! s:get_user_status(user)
 endfunction
 
 function! s:get_problem_status(problem_id)
-  let cmd = printf('%s -s -G -d problem_id=%s http://acm.pku.edu.cn/JudgeOnline/status', s:curl, a:problem_id)
+  let cmd = printf('%s -s -G -d problem_id=%s http://poj.org/status', s:curl, a:problem_id)
   if exists('g:poj_proxy')
     let cmd .= ' -x ' . g:poj_proxy
   endif
@@ -106,7 +106,7 @@ function! s:get_problem_status(problem_id)
 endfunction
 
 function! s:show_compile_info(id)
-  let cmd = printf('%s -s -G -d solution_id=%d http://acm.pku.edu.cn/JudgeOnline/showcompileinfo',
+  let cmd = printf('%s -s -G -d solution_id=%d http://poj.org/showcompileinfo',
         \ s:curl, a:id)
   if exists('g:poj_proxy')
     let cmd .= '-x ' . g:poj_proxy
@@ -124,7 +124,7 @@ function! s:show_compile_info_line()
 endfunction
 
 function! s:get_problem(problem_id)
-  let cmd = printf('%s -s -G -d id=%d http://acm.pku.edu.cn/JudgeOnline/problem',
+  let cmd = printf('%s -s -G -d id=%d http://poj.org/problem',
         \ s:curl, a:problem_id)
   if exists('g:poj_proxy')
     let cmd .= '-x ' . g:poj_proxy
@@ -209,7 +209,7 @@ function! s:submit(problem_id)
     endif
   endif
 
-  call system(printf('%s -b %s -d problem_id=%s -d language=%d -d source=%s http://acm.pku.edu.cn/JudgeOnline/submit',
+  let conn =  system(printf('%s -b %s -d problem_id=%s -d language=%d -d source=%s -d submit=submit -d encoded=0 http://poj.org/submit',
         \ s:curl, s:cookie_file, a:problem_id, lang2nr[lang], src))
 
   call s:get_user_status(g:poj_user)
