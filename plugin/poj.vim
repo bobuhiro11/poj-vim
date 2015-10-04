@@ -211,6 +211,7 @@ function! s:submit(problem_id)
 
   let conn =  system(printf('%s -b %s -d problem_id=%s -d language=%d -d source=%s -d submit=submit -d encoded=0 http://poj.org/submit',
         \ s:curl, s:cookie_file, a:problem_id, lang2nr[lang], src))
+  echo conn
 
   call s:get_user_status(g:poj_user)
 endfunction
